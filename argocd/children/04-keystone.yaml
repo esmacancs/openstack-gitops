@@ -9,7 +9,7 @@ spec:
   project: default
 
   source:
-    repoURL: https://github.com/openstack/openstack-helm.git
+    repoURL: https://github.com/esmacancs/openstack-gitops.git
     targetRevision: master
     path: keystone
     helm:
