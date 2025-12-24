@@ -10,7 +10,7 @@ spec:
 
   source:
     repoURL: https://github.com/esmacancs/openstack-gitops.git
-    targetRevision: master
+    targetRevision: main
     path: keystone
     helm:
       valueFiles:
