@@ -1,9 +1,11 @@
 rabbitmq:
   volume:
-    enabled: false   # disable PVC for lab
+    server:
+      enabled: false
   pod:
     replicas:
       server: 1
+
 
 mariadb:
   volume:
