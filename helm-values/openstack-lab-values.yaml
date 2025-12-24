@@ -12,8 +12,7 @@ spec:
     path: .
     helm:
       valueFiles:
-        - https://raw.githubusercontent.com/esmacancs/openstack-gitops/refs/heads/main/argocd/openstack-lab-values.yaml
-
+        - https://raw.githubusercontent.com/esmacancs/openstack-gitops/main/helm-values/openstack-lab-values.yaml
   destination:
     server: https://kubernetes.default.svc
     namespace: openstack
