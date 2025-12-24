@@ -4,14 +4,13 @@ metadata:
   name: rabbitmq
   namespace: argocd
   annotations:
-    # Ensures Argo CD deploys backends first if using App-of-Apps
-    argocd.argoproj.io/sync-wave: "1"
+    argocd.argoproj.io/sync-wave: "1"   # Deploy first
 spec:
   project: default
   source:
-    repoURL: https://opendev.org/openstack/openstack-helm
-    targetRevision: master
-    path: rabbitmq
+    repoURL: https://github.com/esmacancs/openstack-gitops.git
+    targetRevision: main
+    path: charts/rabbitmq
     helm:
       valueFiles:
         - https://raw.githubusercontent.com/esmacancs/openstack-gitops/main/helm-values/openstack-lab-values.yaml
