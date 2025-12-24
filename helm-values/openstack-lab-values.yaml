@@ -1,7 +1,8 @@
 rabbitmq:
   volume:
     server:
-      enabled: false
+      enabled: true       # keep volumes
+      storageClass: standard  # match your default SC
   pod:
     replicas:
       server: 1
