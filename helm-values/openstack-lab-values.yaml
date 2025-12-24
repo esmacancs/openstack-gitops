@@ -1,11 +1,15 @@
-rabbitmq:
-  volume:
-    server:
-      enabled: true       # keep volumes
-      storageClass: standard  # match your default SC
-  pod:
-    replicas:
-      server: 1
+pod:
+  replicas:
+    server: 1
+
+volume:
+  class_name: general
+  size: 5Gi
+
+conf:
+  rabbitmq:
+    cluster_partition_handling: autoheal
+
 
 
 mariadb:

@@ -1,7 +1,7 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: openstack
+  name: openstack-backend
   namespace: argocd
 spec:
   project: default
