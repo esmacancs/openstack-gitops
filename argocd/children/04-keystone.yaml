@@ -11,17 +11,18 @@ spec:
   source:
     repoURL: https://github.com/esmacancs/openstack-gitops.git
     targetRevision: main
-    path: keystone
+    path: charts/keystone
     helm:
       valueFiles:
         - https://raw.githubusercontent.com/esmacancs/openstack-gitops/main/helm-values/openstack-lab-values.yaml
       values: |
-        keystone:
-          pod:
-            replicas:
-              api: 1
-          bootstrap:
-            enabled: true
+        pod:
+          replicas:
+            api: 1
+        bootstrap:
+          enabled: true
+        keystone-resources:
+          enabled: true
 
   destination:
     server: https://kubernetes.default.svc
