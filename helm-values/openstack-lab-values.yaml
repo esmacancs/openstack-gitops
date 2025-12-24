@@ -1,26 +1,49 @@
-apiVersion: argoproj.io/v1alpha1
-kind: Application
-metadata:
-  name: openstack
-  namespace: argocd
-spec:
-  project: default
+rabbitmq:
+  volume:
+    enabled: false   # disable PVC for lab
+  pod:
+    replicas:
+      server: 1
 
-  source:
-    repoURL: https://github.com/openstack/openstack-helm.git
-    targetRevision: master
-    path: .
-    helm:
-      valueFiles:
-        - https://raw.githubusercontent.com/esmacancs/openstack-gitops/main/helm-values/openstack-lab-values.yaml
-  destination:
-    server: https://kubernetes.default.svc
-    namespace: openstack
+mariadb:
+  volume:
+    enabled: false
+  pod:
+    replicas:
+      server: 1
 
-  syncPolicy:
-    automated:
-      prune: true
-      selfHeal: true
-    syncOptions:
-      - CreateNamespace=true
+memcached:
+  replicas: 1
 
+keystone:
+  pod:
+    replicas:
+      api: 1
+  bootstrap:
+    enabled: true
+
+glance:
+  storage:
+    type: memory
+  pod:
+    replicas:
+      api: 1
+
+nova:
+  nova_compute:
+    enabled: false
+  pod:
+    replicas:
+      api: 1
+      conductor: 1
+      scheduler: 1
+
+neutron:
+  neutron_agent:
+    enabled: false
+  pod:
+    replicas:
+      server: 1
+
+horizon:
+  replicaCount: 1
