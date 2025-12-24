@@ -7,7 +7,7 @@ spec:
   project: default
 
   source:
-    repoURL: https://opendev.org/openstack/openstack-helm
+    repoURL: https://github.com/openstack/openstack-helm.git
     targetRevision: master
     path: .
     helm:
