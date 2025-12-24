@@ -4,7 +4,7 @@ metadata:
   name: rabbitmq
   namespace: argocd
   annotations:
-    argocd.argoproj.io/sync-wave: "1"   # Deploy first
+    argocd.argoproj.io/sync-wave: "1"
 spec:
   project: default
   source:
