@@ -30,6 +30,15 @@ spec:
             - dockerhub-creds
 
         storage: pvc
+        
+        conf:
+          glance:
+            glance_store:
+              default_store: file
+              filesystem_store_datadir: /var/lib/glance/images
+        
+        storage_init:
+          enabled: false
 
   destination:
     server: https://kubernetes.default.svc

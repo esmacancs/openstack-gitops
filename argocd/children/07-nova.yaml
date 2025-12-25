@@ -36,6 +36,18 @@ spec:
           nova:
             libvirt:
               virt_type: qemu
+            DEFAULT:
+              instances_path: /var/lib/nova/instances
+        
+        storage_init:
+          enabled: false
+        
+        # Disable compute node dependencies for lab
+        dependencies:
+          static:
+            cell_setup:
+              jobs: null
+              services: null
 
   destination:
     server: https://kubernetes.default.svc

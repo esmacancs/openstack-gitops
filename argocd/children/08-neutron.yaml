@@ -38,6 +38,19 @@ spec:
             DEFAULT:
               l3_ha: false
               max_l3_agents_per_router: 1
+        
+        # Disable compute node dependencies for lab
+        dependencies:
+          static:
+            dhcp_agent:
+              jobs: null
+              services: null
+            l3_agent:
+              jobs: null
+              services: null
+            metadata_agent:
+              jobs: null
+              services: null
 
   destination:
     server: https://kubernetes.default.svc
