@@ -37,6 +37,17 @@ spec:
         images:
           pull_secrets:
             - dockerhub-creds
+
+        fernetKeys:
+          persistence:
+            enabled: true
+            existingClaim: keystone-keys
+
+        credentialKeys:
+          persistence:
+            enabled: true
+            existingClaim: keystone-keys
+            
   destination:
     server: https://kubernetes.default.svc
     namespace: openstack
