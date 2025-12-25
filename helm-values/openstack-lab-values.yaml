@@ -1,3 +1,5 @@
+helm3_hook: false
+
 pod:
   replicas:
     server: 1
