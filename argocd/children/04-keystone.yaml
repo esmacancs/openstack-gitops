@@ -33,7 +33,10 @@ spec:
 
         keystone-resources:
           enabled: true
-
+        
+        images:
+          pull_secrets:
+            - dockerhub-creds
   destination:
     server: https://kubernetes.default.svc
     namespace: openstack
