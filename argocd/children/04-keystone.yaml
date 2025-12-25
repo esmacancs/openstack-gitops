@@ -13,6 +13,7 @@ spec:
     targetRevision: main
     path: charts/keystone
     helm:
+      enableHelmHooks: true   # ⭐ THIS IS THE FIX ⭐
       valueFiles:
         - https://raw.githubusercontent.com/esmacancs/openstack-gitops/main/helm-values/openstack-lab-values.yaml
       values: |
