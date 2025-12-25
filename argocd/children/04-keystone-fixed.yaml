@@ -1,0 +1,54 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: keystone
+  namespace: argocd
+  annotations:
+    argocd.argoproj.io/sync-wave: "4"
+spec:
+  project: default
+
+  source:
+    repoURL: https://github.com/esmacancs/openstack-gitops.git
+    targetRevision: main
+    path: charts/keystone
+    helm:
+      valueFiles:
+        - https://raw.githubusercontent.com/esmacancs/openstack-gitops/main/helm-values/openstack-lab-values.yaml
+      values: |
+        pod:
+          replicas:
+            api: 1
+
+        # REQUIRED for GitOps
+        helm3_hook: false
+
+        bootstrap:
+          enabled: true
+          ks_user: admin
+          ks_project: admin
+          ks_role: admin
+          region: RegionOne
+
+        keystone-resources:
+          enabled: true
+
+        images:
+          pull_secrets:
+            - dockerhub-creds
+
+        # Let OpenStack Helm manage fernet keys automatically
+        secrets:
+          fernet_keys:
+            secret_name: keystone-fernet-keys
+
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: openstack
+
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true

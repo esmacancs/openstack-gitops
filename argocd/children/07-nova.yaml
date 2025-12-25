@@ -1,0 +1,49 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: nova
+  namespace: argocd
+  annotations:
+    argocd.argoproj.io/sync-wave: "7"
+spec:
+  project: default
+
+  source:
+    repoURL: https://github.com/esmacancs/openstack-gitops.git
+    targetRevision: main
+    path: charts/nova
+    helm:
+      valueFiles:
+        - https://raw.githubusercontent.com/esmacancs/openstack-gitops/main/helm-values/openstack-lab-values.yaml
+      values: |
+        pod:
+          replicas:
+            api_osapi: 1
+            conductor: 1
+            scheduler: 1
+            novncproxy: 1
+
+        helm3_hook: false
+
+        bootstrap:
+          enabled: true
+
+        images:
+          pull_secrets:
+            - dockerhub-creds
+
+        conf:
+          nova:
+            libvirt:
+              virt_type: qemu
+
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: openstack
+
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true

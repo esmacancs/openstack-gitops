@@ -1,0 +1,41 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: placement
+  namespace: argocd
+  annotations:
+    argocd.argoproj.io/sync-wave: "6"
+spec:
+  project: default
+
+  source:
+    repoURL: https://github.com/esmacancs/openstack-gitops.git
+    targetRevision: main
+    path: charts/placement
+    helm:
+      valueFiles:
+        - https://raw.githubusercontent.com/esmacancs/openstack-gitops/main/helm-values/openstack-lab-values.yaml
+      values: |
+        pod:
+          replicas:
+            api: 1
+
+        helm3_hook: false
+
+        bootstrap:
+          enabled: true
+
+        images:
+          pull_secrets:
+            - dockerhub-creds
+
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: openstack
+
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true
