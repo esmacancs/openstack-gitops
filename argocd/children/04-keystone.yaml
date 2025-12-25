@@ -30,24 +30,18 @@ spec:
           ks_role: admin
           region: RegionOne
 
-
         keystone-resources:
           enabled: true
-        
+
         images:
           pull_secrets:
             - dockerhub-creds
 
-        fernetKeys:
-          persistence:
-            enabled: true
-            existingClaim: keystone-keys
+        # Remove persistent volume for fernet keys - let helm manage them
+        secrets:
+          fernet_keys:
+            secret_name: keystone-fernet-keys
 
-        credentialKeys:
-          persistence:
-            enabled: true
-            existingClaim: keystone-keys
-            
   destination:
     server: https://kubernetes.default.svc
     namespace: openstack
