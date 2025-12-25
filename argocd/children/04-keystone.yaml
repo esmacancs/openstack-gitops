@@ -25,6 +25,11 @@ spec:
 
         bootstrap:
           enabled: true
+          ks_user: admin
+          ks_project: admin
+          ks_role: admin
+          region: RegionOne
+
 
         keystone-resources:
           enabled: true
