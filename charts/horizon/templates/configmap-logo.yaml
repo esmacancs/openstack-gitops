@@ -18,14 +18,29 @@ apiVersion: v1
 kind: ConfigMap
 metadata:
   name: horizon-logo
-binaryData:
-{{- if .Values.conf.horizon.branding.favicon }}
-  favicon.ico: {{ .Values.conf.horizon.branding.favicon }}
-{{- end }}
-{{- if .Values.conf.horizon.branding.logo }}
-  logo.svg: {{ .Values.conf.horizon.branding.logo }}
-{{- end }}
-{{- if .Values.conf.horizon.branding.logo_splash }}
-  logo-splash.svg: {{ .Values.conf.horizon.branding.logo_splash }}
-{{- end }}
+  annotations:
+    argocd.argoproj.io/sync-options: Prune=false
+data:
+  logo.svg: |
+    <svg width="200" height="50" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <linearGradient id="grad1" x1="0%" y1="0%" x2="100%" y2="0%">
+          <stop offset="0%" style="stop-color:#1e3a8a;stop-opacity:1" />
+          <stop offset="100%" style="stop-color:#3b82f6;stop-opacity:1" />
+        </linearGradient>
+      </defs>
+      <rect width="200" height="50" fill="url(#grad1)" rx="5"/>
+      <text x="100" y="32" font-family="Arial, sans-serif" font-size="18" font-weight="bold" fill="#FFFFFF" text-anchor="middle">TrishOra</text>
+    </svg>
+  logo-splash.svg: |
+    <svg width="200" height="50" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <linearGradient id="grad1" x1="0%" y1="0%" x2="100%" y2="0%">
+          <stop offset="0%" style="stop-color:#1e3a8a;stop-opacity:1" />
+          <stop offset="100%" style="stop-color:#3b82f6;stop-opacity:1" />
+        </linearGradient>
+      </defs>
+      <rect width="200" height="50" fill="url(#grad1)" rx="5"/>
+      <text x="100" y="32" font-family="Arial, sans-serif" font-size="18" font-weight="bold" fill="#FFFFFF" text-anchor="middle">TrishOra</text>
+    </svg>
 {{- end }}
