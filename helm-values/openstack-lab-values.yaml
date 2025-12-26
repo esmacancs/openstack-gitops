@@ -62,7 +62,22 @@ horizon_helm_values:
   conf:
     horizon:
       branding:
-        logo: "PHN2ZyB3aWR0aD0iMjAwIiBoZWlnaHQ9IjUwIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPgogIDxyZWN0IHdpZHRoPSIyMDAiIGhlaWdodD0iNTAiIGZpbGw9IiMyMTk2RjMiLz4KICA8dGV4dCB4PSIxMDAiIHk9IjMwIiBmb250LWZhbWlseT0iQXJpYWwiIGZvbnQtc2l6ZT0iMTYiIGZpbGw9IndoaXRlIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIj5UZXN0TG9nbzwvdGV4dD4KPC9zdmc+Cg=="
-        logo_splash: "PHN2ZyB3aWR0aD0iMjAwIiBoZWlnaHQ9IjUwIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPgogIDxyZWN0IHdpZHRoPSIyMDAiIGhlaWdodD0iNTAiIGZpbGw9IiMyMTk2RjMiLz4KICA8dGV4dCB4PSIxMDAiIHk9IjMwIiBmb250LWZhbWlseT0iQXJpYWwiIGZvbnQtc2l6ZT0iMTYiIGZpbGw9IndoaXRlIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIj5UZXN0TG9nbzwvdGV4dD4KPC9zdmc+Cg=="
+        logo: "{{ lookup('file', 'files/logo.svg') | b64encode }}"
+        logo_splash: "{{ lookup('file', 'files/logo-splash.svg') | b64encode }}"
   manifests:
     configmap_logo: true
+  pod:
+    mounts:
+      horizon:
+        horizon:
+          volumeMounts:
+          - name: horizon-logo
+            mountPath: /var/www/html/horizon/dashboard/img/logo.svg
+            subPath: logo.svg
+          - name: horizon-logo
+            mountPath: /var/www/html/horizon/dashboard/img/logo-splash.svg
+            subPath: logo-splash.svg
+          volumes:
+          - name: horizon-logo
+            configMap:
+              name: horizon-logo
