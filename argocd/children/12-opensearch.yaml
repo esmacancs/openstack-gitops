@@ -11,38 +11,34 @@ spec:
     chart: opensearch
     helm:
       values: |
-        clusterName: "opensearch-cluster"
+        clusterName: "opensearch"
         nodeGroup: "master"
         
-        # Single node for demo
+        # Single node setup
         replicas: 1
         minimumMasterNodes: 1
         
-        # Resource limits
+        # Reduced resources for faster startup
         resources:
           requests:
             cpu: "100m"
-            memory: "512Mi"
+            memory: "1Gi"
           limits:
             cpu: "1000m"
-            memory: "1Gi"
+            memory: "2Gi"
             
-        # Persistence
-        persistence:
-          enabled: true
-          size: 8Gi
-          
-        # Security
+        # Disable security for simplicity
         config:
           opensearch.yml: |
-            cluster.name: opensearch-cluster
+            cluster.name: opensearch
             network.host: 0.0.0.0
             plugins.security.disabled: true
             discovery.type: single-node
+            bootstrap.memory_lock: false
             
-        # Service
-        service:
-          type: ClusterIP
+        # Persistence
+        persistence:
+          enabled: false
           
   destination:
     server: https://kubernetes.default.svc
