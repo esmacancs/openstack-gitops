@@ -66,18 +66,3 @@ horizon_helm_values:
         logo_splash: "{{ lookup('file', 'files/logo-splash.svg') | b64encode }}"
   manifests:
     configmap_logo: true
-  pod:
-    mounts:
-      horizon:
-        horizon:
-          volumeMounts:
-          - name: horizon-logo
-            mountPath: /var/www/html/horizon/dashboard/img/logo.svg
-            subPath: logo.svg
-          - name: horizon-logo
-            mountPath: /var/www/html/horizon/dashboard/img/logo-splash.svg
-            subPath: logo-splash.svg
-          volumes:
-          - name: horizon-logo
-            configMap:
-              name: horizon-logo
