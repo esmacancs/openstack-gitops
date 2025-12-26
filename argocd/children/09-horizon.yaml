@@ -31,6 +31,31 @@ spec:
             local_settings:
               config:
                 openstack_keystone_url: "http://keystone-api.openstack.svc.cluster.local:5000/v3"
+                site_branding: "YourCompany OpenStack"
+                site_branding_link: "https://yourcompany.com"
+                help_url: "https://yourcompany.com/support"
+            branding:
+              logo: "PHN2ZyB3aWR0aD0iMjAwIiBoZWlnaHQ9IjUwIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPgogIDxyZWN0IHdpZHRoPSIyMDAiIGhlaWdodD0iNTAiIGZpbGw9IiNGRjAwMDAiIHN0cm9rZT0iIzAwMCIgc3Ryb2tlLXdpZHRoPSIyIi8+CiAgPHRleHQgeD0iMTAwIiB5PSIzMCIgZm9udC1mYW1pbHk9IkFyaWFsIiBmb250LXNpemU9IjIwIiBmb250LXdlaWdodD0iYm9sZCIgZmlsbD0iI0ZGRkZGRiIgdGV4dC1hbmNob3I9Im1pZGRsZSI+TVkgTE9HTzwvdGV4dD4KPC9zdmc+Cg=="
+              logo_splash: "PHN2ZyB3aWR0aD0iMjAwIiBoZWlnaHQ9IjUwIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPgogIDxyZWN0IHdpZHRoPSIyMDAiIGhlaWdodD0iNTAiIGZpbGw9IiNGRjAwMDAiIHN0cm9rZT0iIzAwMCIgc3Ryb2tlLXdpZHRoPSIyIi8+CiAgPHRleHQgeD0iMTAwIiB5PSIzMCIgZm9udC1mYW1pbHk9IkFyaWFsIiBmb250LXNpemU9IjIwIiBmb250LXdlaWdodD0iYm9sZCIgZmlsbD0iI0ZGRkZGRiIgdGV4dC1hbmNob3I9Im1pZGRsZSI+TVkgTE9HTzwvdGV4dD4KPC9zdmc+Cg=="
+
+        manifests:
+          configmap_logo: true
+
+        pod:
+          mounts:
+            horizon:
+              horizon:
+                volumeMounts:
+                - name: horizon-logo
+                  mountPath: /var/www/html/horizon/dashboard/img/logo.svg
+                  subPath: logo.svg
+                - name: horizon-logo
+                  mountPath: /var/www/html/horizon/dashboard/img/logo-splash.svg
+                  subPath: logo-splash.svg
+                volumes:
+                - name: horizon-logo
+                  configMap:
+                    name: horizon-logo
 
   destination:
     server: https://kubernetes.default.svc
