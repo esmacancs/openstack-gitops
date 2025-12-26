@@ -1,0 +1,49 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: opensearch-dashboards
+  namespace: argocd
+spec:
+  project: default
+  source:
+    repoURL: https://opensearch-project.github.io/helm-charts/
+    targetRevision: 2.23.1
+    chart: opensearch-dashboards
+    helm:
+      values: |
+        replicaCount: 1
+        
+        # Resources
+        resources:
+          requests:
+            cpu: "100m"
+            memory: "512Mi"
+          limits:
+            cpu: "500m"
+            memory: "1Gi"
+            
+        # OpenSearch connection
+        opensearchHosts: "http://opensearch-cluster-master:9200"
+        
+        # Configuration
+        config:
+          opensearch_dashboards.yml: |
+            server.host: 0.0.0.0
+            opensearch.hosts: ["http://opensearch-cluster-master:9200"]
+            opensearch.ssl.verificationMode: none
+            opensearch.security.enabled: false
+            
+        # Service
+        service:
+          type: ClusterIP
+          port: 5601
+          
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: opensearch
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true
