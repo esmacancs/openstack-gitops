@@ -66,5 +66,5 @@ horizon:
   manifests:
     configmap_logo: true
 
-skyline:
+elasticsearch:
   replicaCount: 1
