@@ -58,7 +58,6 @@ neutron:
 
 horizon:
   replicaCount: 1
-horizon_helm_values:
   conf:
     horizon:
       branding:
