@@ -1,0 +1,69 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: grafana-monitoring
+  namespace: argocd
+  annotations:
+    argocd.argoproj.io/sync-wave: "14"
+spec:
+  project: default
+  source:
+    repoURL: https://github.com/esmacancs/openstack-gitops.git
+    targetRevision: main
+    path: charts/grafana
+    helm:
+      valueFiles:
+        - https://raw.githubusercontent.com/esmacancs/openstack-gitops/main/helm-values/openstack-lab-values.yaml
+      values: |
+        conf:
+          grafana:
+            datasources:
+              datasources.yaml:
+                apiVersion: 1
+                datasources:
+                  - name: prometheus
+                    type: prometheus
+                    access: proxy
+                    url: http://prometheus.openstack.svc.cluster.local:9090
+                    isDefault: true
+            dashboards:
+              default_dashboards_enabled: true
+              openstack:
+                openstack-nova:
+                  gnetId: 9701
+                  revision: 1
+                  datasource: prometheus
+                openstack-neutron:
+                  gnetId: 9704
+                  revision: 1
+                  datasource: prometheus
+      values: |
+        endpoints:
+          prometheus:
+            host_fqdn_override:
+              default:
+                host: prometheus.openstack.svc.cluster.local
+        conf:
+          grafana:
+            datasources:
+              datasources.yaml:
+                apiVersion: 1
+                datasources:
+                  - name: prometheus
+                    type: prometheus
+                    access: proxy
+                    url: http://prometheus.openstack.svc.cluster.local:9090
+                    isDefault: true
+            dashboards:
+              default_dashboards_enabled: true
+        manifests:
+          ingress: true
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: openstack
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true
