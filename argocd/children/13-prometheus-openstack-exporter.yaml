@@ -1,0 +1,52 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: prometheus-openstack-exporter
+  namespace: argocd
+  annotations:
+    argocd.argoproj.io/sync-wave: "13"
+spec:
+  project: default
+  source:
+    repoURL: https://github.com/esmacancs/openstack-gitops.git
+    targetRevision: main
+    path: charts/prometheus-openstack-exporter
+    helm:
+      valueFiles:
+        - https://raw.githubusercontent.com/esmacancs/openstack-gitops/main/helm-values/openstack-lab-values.yaml
+      values: |
+        endpoints:
+          identity:
+            auth:
+              admin:
+                username: admin
+                password: password
+                project_name: admin
+                user_domain_name: default
+                project_domain_name: default
+            host_fqdn_override:
+              default:
+                host: keystone.openstack.svc.cluster.local
+        conf:
+          prometheus_openstack_exporter:
+            DEFAULT:
+              log_level: INFO
+            cache:
+              backend: dogpile.cache.memory
+            keystone_authtoken:
+              auth_type: password
+              auth_url: http://keystone.openstack.svc.cluster.local:5000/v3
+              username: admin
+              password: password
+              project_name: admin
+              user_domain_name: default
+              project_domain_name: default
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: openstack
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true

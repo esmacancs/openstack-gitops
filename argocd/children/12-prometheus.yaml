@@ -1,0 +1,52 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: prometheus
+  namespace: argocd
+  annotations:
+    argocd.argoproj.io/sync-wave: "12"
+spec:
+  project: default
+  source:
+    repoURL: https://github.com/esmacancs/openstack-gitops.git
+    targetRevision: main
+    path: charts/prometheus
+    helm:
+      valueFiles:
+        - https://raw.githubusercontent.com/esmacancs/openstack-gitops/main/helm-values/openstack-lab-values.yaml
+      values: |
+        storage:
+          prometheus:
+            enabled: true
+            pvc:
+              size: 20Gi
+        conf:
+          prometheus:
+            rules:
+              openstack: |
+                groups:
+                - name: openstack
+                  rules:
+                  - alert: OpenStackServiceDown
+                    expr: up{job=~".*openstack.*"} == 0
+                    for: 5m
+                    labels:
+                      severity: critical
+                    annotations:
+                      summary: "OpenStack service {{ $labels.instance }} is down"
+            scrape_configs:
+              openstack_exporter: |
+                - job_name: 'openstack-exporter'
+                  static_configs:
+                    - targets: ['prometheus-openstack-exporter.openstack.svc.cluster.local:9198']
+        manifests:
+          ingress: true
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: openstack
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true
