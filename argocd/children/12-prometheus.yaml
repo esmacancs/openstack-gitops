@@ -14,14 +14,6 @@ spec:
     helm:
       valueFiles:
         - https://raw.githubusercontent.com/esmacancs/openstack-gitops/main/helm-values/openstack-lab-values.yaml
-      values: |
-        storage:
-          prometheus:
-            enabled: true
-            pvc:
-              size: 20Gi
-        manifests:
-          ingress: true
   destination:
     server: https://kubernetes.default.svc
     namespace: openstack
