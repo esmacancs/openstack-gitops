@@ -15,6 +15,29 @@ spec:
       valueFiles:
         - https://raw.githubusercontent.com/esmacancs/openstack-gitops/main/helm-values/openstack-lab-values.yaml
       values: |
+        conf:
+          grafana:
+            datasources:
+              datasources.yaml:
+                apiVersion: 1
+                datasources:
+                  - name: prometheus
+                    type: prometheus
+                    access: proxy
+                    url: http://prometheus.openstack.svc.cluster.local:9090
+                    isDefault: true
+            dashboards:
+              default_dashboards_enabled: true
+              openstack:
+                openstack-nova:
+                  gnetId: 9701
+                  revision: 1
+                  datasource: prometheus
+                openstack-neutron:
+                  gnetId: 9704
+                  revision: 1
+                  datasource: prometheus
+      values: |
         endpoints:
           prometheus:
             host_fqdn_override:
