@@ -14,33 +14,6 @@ spec:
     helm:
       valueFiles:
         - https://raw.githubusercontent.com/esmacancs/openstack-gitops/main/helm-values/openstack-lab-values.yaml
-      values: |
-        endpoints:
-          identity:
-            auth:
-              admin:
-                username: admin
-                password: password
-                project_name: admin
-                user_domain_name: default
-                project_domain_name: default
-            host_fqdn_override:
-              default:
-                host: keystone.openstack.svc.cluster.local
-        conf:
-          prometheus_openstack_exporter:
-            DEFAULT:
-              log_level: INFO
-            cache:
-              backend: dogpile.cache.memory
-            keystone_authtoken:
-              auth_type: password
-              auth_url: http://keystone.openstack.svc.cluster.local:5000/v3
-              username: admin
-              password: password
-              project_name: admin
-              user_domain_name: default
-              project_domain_name: default
   destination:
     server: https://kubernetes.default.svc
     namespace: openstack
