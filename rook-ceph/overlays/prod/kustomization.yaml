@@ -1,0 +1,7 @@
+namespace: rook-ceph
+resources:
+  - ../../base
+
+patchesStrategicMerge:
+  - rook-ceph-overrides.yaml
+

@@ -1,0 +1,119 @@
+apiVersion: ceph.rook.io/v1
+kind: CephCluster
+metadata:
+  name: rook-ceph
+  namespace: rook-ceph
+spec:
+  cephVersion:
+    image: quay.io/ceph/ceph:v18.2.7
+    allowUnsupported: false
+  dataDirHostPath: /var/lib/rook
+  skipUpgradeChecks: false
+  continueUpgradeAfterChecksEvenIfNotHealthy: false
+  waitTimeoutForHealthyOSDInMinutes: 10
+  upgradeOSDRequiresHealthyPGs: false
+
+  mon:
+    count: 3
+    allowMultiplePerNode: false
+
+  mgr:
+    count: 2
+    allowMultiplePerNode: false
+    modules:
+      - name: rook
+        enabled: true
+
+  dashboard:
+    enabled: true
+    ssl: true
+
+  monitoring:
+    enabled: false
+    metricsDisabled: false
+    exporter:
+      perfCountersPrioLimit: 5
+      statsPeriodSeconds: 5
+
+  network:
+    provider: multus
+    selectors:
+      public: ceph-public   # Multus NetAttachDef for CEPH_PUB VLAN 3409
+      cluster: ceph-cluster  # Multus NetAttachDef for CEPH_CLS VLAN 3408
+    connections:
+      encryption:
+        enabled: false
+      compression:
+        enabled: false
+      requireMsgr2: false
+
+  crashCollector:
+    disable: false
+
+  logCollector:
+    enabled: true
+    periodicity: daily
+    maxLogSize: 500M
+
+storage:
+  useAllNodes: false
+  nodes:
+    - name: worker-comp-ceph-01
+      devices:
+        # Excluding sda (boot) and small disks (like 447G)
+#        - name: "pci-0000:65:00.0-scsi-0:3:102:0" # sdb
+#        - name: "pci-0000:65:00.0-scsi-0:3:103:0" # sdf
+#        - name: "pci-0000:65:00.0-scsi-0:3:104:0" # sdc
+#        - name: "pci-0000:65:00.0-scsi-0:3:105:0" # sdd
+        - name: "pci-0000:65:00.0-scsi-0:3:106:0" # sde
+        - name: "pci-0000:65:00.0-scsi-0:3:108:0" # sdg
+        - name: "pci-0000:65:00.0-scsi-0:3:109:0" # sdh
+        - name: "pci-0000:65:00.0-scsi-0:3:110:0" # sdi
+        - name: "pci-0000:65:00.0-scsi-0:3:111:0" # sdj
+
+    - name: worker-comp-ceph-02
+      devices:
+        # Excluding sda (boot)
+#        - name: "pci-0000:18:00.0-scsi-0:2:1:0"   # sdb
+#        - name: "pci-0000:18:00.0-scsi-0:2:10:0"  # sdj
+#        - name: "pci-0000:18:00.0-scsi-0:2:11:0"  # sdl
+        - name: "pci-0000:18:00.0-scsi-0:2:12:0"  # sdm
+        - name: "pci-0000:18:00.0-scsi-0:2:13:0"  # sdn
+        - name: "pci-0000:18:00.0-scsi-0:2:14:0"  # sdo
+        - name: "pci-0000:18:00.0-scsi-0:2:15:0"  # sdp
+        - name: "pci-0000:18:00.0-scsi-0:2:16:0"  # sdr
+#        - name: "pci-0000:18:00.0-scsi-0:2:17:0"  # sds
+#        - name: "pci-0000:18:00.0-scsi-0:2:18:0"  # sdr
+#        - name: "pci-0000:18:00.0-scsi-0:2:19:0"  # sdt
+#        - name: "pci-0000:18:00.0-scsi-0:2:2:0"   # sdc
+
+    - name: worker-comp-ceph-03
+      devices:
+        # Excluding sda3 (boot) and small disk sdb
+#        - name: "pci-0000:65:00.0-scsi-0:3:103:0" # sdh
+#        - name: "pci-0000:65:00.0-scsi-0:3:104:0" # sda
+#        - name: "pci-0000:65:00.0-scsi-0:3:105:0" # sdb
+        - name: "pci-0000:65:00.0-scsi-0:3:106:0" # sdc
+        - name: "pci-0000:65:00.0-scsi-0:3:107:0" # sdd
+        - name: "pci-0000:65:00.0-scsi-0:3:108:0" # sde
+        - name: "pci-0000:65:00.0-scsi-0:3:109:0" # sdf
+        - name: "pci-0000:65:00.0-scsi-0:3:110:0" # sdg
+#        - name: "pci-0000:65:00.0-scsi-0:3:111:0" # sdi
+
+  removeOSDsIfOutAndSafeToRemove: false
+
+  priorityClassNames:
+    mon: system-node-critical
+    osd: system-node-critical
+    mgr: system-cluster-critical
+
+  disruptionManagement:
+    managePodBudgets: true
+    osdMaintenanceTimeout: 30
+
+  csi:
+    readAffinity:
+      enabled: false
+    cephfs:
+      # kernelMountOptions: ""
+      # fuseMountOptions: ""
