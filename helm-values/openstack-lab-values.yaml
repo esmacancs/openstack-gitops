@@ -35,7 +35,10 @@ keystone-resources:
 
 glance:
   storage:
-    type: memory
+    type: rbd
+    rbd:
+      pool: images
+      user: glance
   pod:
     replicas:
       api: 1
