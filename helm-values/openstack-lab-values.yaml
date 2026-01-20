@@ -39,6 +39,18 @@ glance:
     rbd:
       pool: images
       user: glance
+      secret_uuid: 457eb676-33da-42ec-9a8c-9293d545c337
+  conf:
+    glance:
+      DEFAULT:
+        show_image_direct_url: true
+      glance_store:
+        default_store: rbd
+        stores: rbd
+        rbd_store_pool: images
+        rbd_store_user: glance
+        rbd_store_ceph_conf: /etc/ceph/ceph.conf
+        rbd_store_chunk_size: 8
   pod:
     replicas:
       api: 1
