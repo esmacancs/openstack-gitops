@@ -2,7 +2,7 @@ helm3_hook: false
 
 pod:
   replicas:
-    server: 1
+    server: 3
 
 volume:
   class_name: general
@@ -16,13 +16,15 @@ conf:
 
 mariadb:
   volume:
-    enabled: false
+    enabled: true
+    class_name: general
+    size: 20Gi
   pod:
     replicas:
-      server: 1
+      server: 3
 
 memcached:
-  replicas: 1
+  replicas: 3
 
 keystone:
   pod:
