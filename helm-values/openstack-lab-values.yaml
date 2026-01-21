@@ -52,9 +52,8 @@ keystone:
   endpoints:
     identity:
       host_fqdn_override:
-        default: null
         public:
-          host: keystone.10-8-132-108.sslip.io
+          host: keystone.10.8.132.108.sslip.io
 keystone-resources:
     enabled: true
 
@@ -89,7 +88,7 @@ glance:
     image:
       host_fqdn_override:
         public:
-          host: glance.10-8-132-108.sslip.io
+          host: glance.10.8.132.108.sslip.io
         internal:
           host: glance.openstack.svc.cluster.local
 
@@ -105,7 +104,7 @@ nova:
     compute:
       host_fqdn_override:
         public:
-          host: nova.10-8-132-108.sslip.io
+          host: nova.10.8.132.108.sslip.io
         internal:
           host: nova.openstack.svc.cluster.local
 
@@ -141,7 +140,7 @@ cinder:
     volume:
       host_fqdn_override:
         public:
-          host: cinder.10-8-132-108.sslip.io
+          host: cinder.10.8.132.108.sslip.io
         internal:
           host: cinder.openstack.svc.cluster.local
 
@@ -161,7 +160,7 @@ neutron:
     network:
       host_fqdn_override:
         public:
-          host: neutron.10-8-132-108.sslip.io
+          host: neutron.10.8.132.108.sslip.io
         internal:
           host: neutron.openstack.svc.cluster.local
   conf:
@@ -193,7 +192,7 @@ horizon:
     dashboard:
       host_fqdn_override:
         public:
-          host: horizon.10-8-132-108.sslip.io
+          host: horizon.10.8.132.108.sslip.io
         internal:
           host: horizon.openstack.svc.cluster.local
   conf:
