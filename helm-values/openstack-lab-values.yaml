@@ -7,7 +7,7 @@ network:
         namespace: "ingress-openstack"
         cluster: "ingress-openstack"
       annotations:
-        nginx.ingress.kubernetes.io/rewrite-target: /
+        haproxy.org/path-rewrite: "/"
 
 pod:
   replicas:
@@ -48,7 +48,7 @@ keystone:
           namespace: "ingress-openstack"
           cluster: "ingress-openstack"
         annotations:
-          nginx.ingress.kubernetes.io/rewrite-target: /
+          haproxy.org/path-rewrite: "/"
   endpoints:
     identity:
       host_fqdn_override:
