@@ -42,6 +42,9 @@ spec:
         storage_init:
           enabled: false
         
+        manifests:
+          daemonset_compute: false
+        
         # Disable compute node dependencies for lab
         dependencies:
           static:
