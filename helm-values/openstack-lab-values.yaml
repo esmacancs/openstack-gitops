@@ -32,6 +32,13 @@ keystone:
       api: 3
   bootstrap:
     enabled: true
+  endpoints:
+    identity:
+      host_fqdn_override:
+        public:
+          host: keystone.10-8-132-108.sslip.io
+        internal:
+          host: keystone.openstack.svc.cluster.local
 keystone-resources:
     enabled: true
 
@@ -55,26 +62,54 @@ glance:
         rbd_store_chunk_size: 8
   pod:
     replicas:
-      api: 1
+      api: 3
+  endpoints:
+    image:
+      host_fqdn_override:
+        public:
+          host: glance.10-8-132-108.sslip.io
+        internal:
+          host: glance.openstack.svc.cluster.local
 
 nova:
   nova_compute:
     enabled: false
   pod:
     replicas:
-      api: 1
-      conductor: 1
-      scheduler: 1
+      api: 3
+      conductor: 3
+      scheduler: 3
+  endpoints:
+    compute:
+      host_fqdn_override:
+        public:
+          host: nova.10-8-132-108.sslip.io
+        internal:
+          host: nova.openstack.svc.cluster.local
 
 neutron:
   neutron_agent:
     enabled: false
   pod:
     replicas:
-      server: 1
+      server: 3
+  endpoints:
+    network:
+      host_fqdn_override:
+        public:
+          host: neutron.10-8-132-108.sslip.io
+        internal:
+          host: neutron.openstack.svc.cluster.local
 
 horizon:
-  replicaCount: 1
+  replicaCount: 3
+  endpoints:
+    dashboard:
+      host_fqdn_override:
+        public:
+          host: horizon.10-8-132-108.sslip.io
+        internal:
+          host: horizon.openstack.svc.cluster.local
   conf:
     horizon:
       branding:
