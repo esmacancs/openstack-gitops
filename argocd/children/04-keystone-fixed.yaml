@@ -52,9 +52,9 @@ spec:
       selfHeal: true
     syncOptions:
       - CreateNamespace=true
-    ignoreDifferences:
-    - group: ""
-      kind: Secret
-      name: keystone-fernet-keys
-      jsonPointers:
-      - /data
+  ignoreDifferences:
+  - group: ""
+    kind: Secret
+    name: keystone-fernet-keys
+    jsonPointers:
+    - /data
