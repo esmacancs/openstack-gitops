@@ -44,6 +44,7 @@ spec:
         
         manifests:
           daemonset_compute: false
+          job_cell_setup: false
         
         # Disable compute node dependencies for lab
         dependencies:
