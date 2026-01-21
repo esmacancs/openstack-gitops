@@ -29,7 +29,7 @@ memcached:
 keystone:
   pod:
     replicas:
-      api: 1
+      api: 3
   bootstrap:
     enabled: true
 keystone-resources:

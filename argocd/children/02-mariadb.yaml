@@ -13,8 +13,14 @@ spec:
     targetRevision: master
     path: mariadb
     helm:
-      valueFiles:
-        - https://raw.githubusercontent.com/esmacancs/openstack-gitops/main/helm-values/openstack-lab-values.yaml
+      values: |
+        pod:
+          replicas:
+            server: 3
+        volume:
+          enabled: true
+          class_name: general
+          size: 20Gi
 
   destination:
     server: https://kubernetes.default.svc
