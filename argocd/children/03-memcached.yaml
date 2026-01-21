@@ -15,8 +15,8 @@ spec:
     helm:
       valueFiles:
         - https://raw.githubusercontent.com/esmacancs/openstack-gitops/main/helm-values/openstack-lab-values.yaml
-      values: |
-        replicas: 1
+#      values: |
+#        replicas: 1
 
   destination:
     server: https://kubernetes.default.svc
