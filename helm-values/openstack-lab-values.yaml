@@ -47,17 +47,14 @@ keystone:
         classes:
           namespace: "ingress-openstack"
           cluster: "ingress-openstack"
-        public:
-          host: keystone.10-8-132-108.sslip.io
         annotations:
           nginx.ingress.kubernetes.io/rewrite-target: /
   endpoints:
     identity:
       host_fqdn_override:
+        default: null
         public:
           host: keystone.10-8-132-108.sslip.io
-        internal:
-          host: keystone.openstack.svc.cluster.local
 keystone-resources:
     enabled: true
 
