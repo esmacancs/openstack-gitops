@@ -15,6 +15,9 @@ spec:
       values: |
         ceph:
           namespace: rook-ceph
+        manifests:
+          namespace_client_ceph_config_generator: true
+          namespace_client_key_generator: true
   destination:
     server: https://kubernetes.default.svc
     namespace: openstack
