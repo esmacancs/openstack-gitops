@@ -13,8 +13,7 @@ spec:
     targetRevision: "*"
     helm:
       values: |
-        ceph:
-          namespace: rook-ceph
+        ceph_cluster_namespace: rook-ceph
         manifests:
           namespace_client_ceph_config_generator: true
           namespace_client_key_generator: true
