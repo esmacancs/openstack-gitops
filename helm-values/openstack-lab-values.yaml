@@ -95,6 +95,8 @@ glance:
 nova:
   nova_compute:
     enabled: false
+  manifests:
+    daemonset_compute: false
   pod:
     replicas:
       api: 3
