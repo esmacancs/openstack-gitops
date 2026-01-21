@@ -49,6 +49,8 @@ keystone:
           cluster: "ingress-openstack"
         public:
           host: keystone.10-8-132-108.sslip.io
+        annotations:
+          nginx.ingress.kubernetes.io/rewrite-target: /
   endpoints:
     identity:
       host_fqdn_override:
