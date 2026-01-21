@@ -14,6 +14,8 @@ spec:
     helm:
       valueFiles:
         - https://raw.githubusercontent.com/esmacancs/openstack-gitops/main/helm-values/openstack-lab-values.yaml
+      values: |
+        ceph_cluster_namespace: rook-ceph
   destination:
     server: https://kubernetes.default.svc
     namespace: openstack
