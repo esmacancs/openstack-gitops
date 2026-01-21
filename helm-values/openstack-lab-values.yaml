@@ -168,28 +168,23 @@ neutron:
       DEFAULT:
         core_plugin: ml2
         service_plugins: router
-      ml2:
-        type_drivers: flat,vlan,vxlan
-        tenant_network_types: vxlan
-        mechanism_drivers: openvswitch
-        extension_drivers: port_security
-      ml2_type_flat:
-        flat_networks: provider
-      ml2_type_vlan:
-        network_vlan_ranges: provider:3411:3411
-      ml2_type_vxlan:
-        vni_ranges: 1:1000
-        vxlan_group: 239.1.1.1
     plugins:
       ml2_conf:
         ml2:
           type_drivers: flat,vlan,vxlan
           tenant_network_types: vxlan
           mechanism_drivers: openvswitch
+          extension_drivers: port_security
         ml2_type_flat:
           flat_networks: provider
         ml2_type_vlan:
           network_vlan_ranges: provider:3411:3411
+        ml2_type_vxlan:
+          vni_ranges: 1:1000
+          vxlan_group: 239.1.1.1
+        ovs:
+          bridge_mappings: provider:br-provider
+          local_ip: $HOST_IP
 
 horizon:
   replicaCount: 3
