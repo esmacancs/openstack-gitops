@@ -8,15 +8,12 @@ metadata:
 spec:
   project: default
   source:
-    repoURL: https://tarballs.openstack.org/openstack-helm/
-    chart: ceph-adapter-rook
-    targetRevision: "*"
+    repoURL: https://github.com/esmacancs/openstack-gitops.git
+    targetRevision: main
+    path: charts/ceph-adapter-rook
     helm:
-      values: |
-        ceph_cluster_namespace: rook-ceph
-        manifests:
-          namespace_client_ceph_config_generator: true
-          namespace_client_key_generator: true
+      valueFiles:
+        - https://raw.githubusercontent.com/esmacancs/openstack-gitops/main/helm-values/openstack-lab-values.yaml
   destination:
     server: https://kubernetes.default.svc
     namespace: openstack
