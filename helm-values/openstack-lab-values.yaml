@@ -108,6 +108,42 @@ nova:
         internal:
           host: nova.openstack.svc.cluster.local
 
+cinder:
+  pod:
+    replicas:
+      api: 3
+      volume: 3
+      scheduler: 3
+      backup: 1
+  conf:
+    cinder:
+      DEFAULT:
+        enabled_backends: "rbd1"
+      rbd1:
+        volume_driver: cinder.volume.drivers.rbd.RBDDriver
+        volume_backend_name: rbd1
+        rbd_pool: volumes
+        rbd_ceph_conf: /etc/ceph/ceph.conf
+        rbd_flatten_volume_from_snapshot: false
+        rbd_max_clone_depth: 5
+        rbd_store_chunk_size: 4
+        rados_connect_timeout: -1
+        rbd_user: cinder
+        rbd_secret_uuid: 457eb676-33da-42ec-9a8c-9293d545c337
+  network:
+    api:
+      ingress:
+        classes:
+          namespace: "ingress-openstack"
+          cluster: "ingress-openstack"
+  endpoints:
+    volume:
+      host_fqdn_override:
+        public:
+          host: cinder.10-8-132-108.sslip.io
+        internal:
+          host: cinder.openstack.svc.cluster.local
+
 neutron:
   neutron_agent:
     enabled: false
