@@ -32,3 +32,6 @@ spec:
     name: cinder-volume-rbd-keyring
     jsonPointers:
     - /data
+  - group: "batch"
+    kind: Job
+    name: cinder-storage-init
