@@ -1,5 +1,14 @@
 helm3_hook: false
 
+network:
+  api:
+    ingress:
+      classes:
+        namespace: "ingress-openstack"
+        cluster: "ingress-openstack"
+      annotations:
+        nginx.ingress.kubernetes.io/rewrite-target: /
+
 pod:
   replicas:
     server: 3
@@ -32,6 +41,12 @@ keystone:
       api: 3
   bootstrap:
     enabled: true
+  network:
+    api:
+      ingress:
+        classes:
+          namespace: "ingress-openstack"
+          cluster: "ingress-openstack"
   endpoints:
     identity:
       host_fqdn_override:
@@ -63,6 +78,12 @@ glance:
   pod:
     replicas:
       api: 3
+  network:
+    api:
+      ingress:
+        classes:
+          namespace: "ingress-openstack"
+          cluster: "ingress-openstack"
   endpoints:
     image:
       host_fqdn_override:
