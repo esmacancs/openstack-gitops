@@ -205,3 +205,6 @@ horizon:
 
 elasticsearch:
   replicaCount: 1
+
+ceph-adapter-rook:
+  ceph_cluster_namespace: rook-ceph
