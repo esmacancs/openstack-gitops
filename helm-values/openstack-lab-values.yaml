@@ -1,4 +1,8 @@
 helm3_hook: false
+conf:
+  ceph:
+    enabled: true
+    cluster_namespace: rook-ceph
 
 network:
   api:
