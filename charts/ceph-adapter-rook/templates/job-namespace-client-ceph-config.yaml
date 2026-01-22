@@ -83,16 +83,10 @@ metadata:
   labels:
 {{ tuple $envAll "ceph" "namespace-client-ceph-config" | include "helm-toolkit.snippets.kubernetes_metadata_labels" | indent 4 }}
 spec:
-  # FIX: add selector
-  selector:
-    matchLabels:
-      job-name: {{ $serviceAccountName }}
-
   template:
     metadata:
       labels:
-        job-name: {{ $serviceAccountName }}
-
+{{ tuple $envAll "ceph" "namespace-client-ceph-config" | include "helm-toolkit.snippets.kubernetes_metadata_labels" | indent 8 }}      
       annotations:
 {{ dict "envAll" $envAll "podName" $serviceAccountName "containerNames" (list "ceph-storage-keys-generator" "init") | include "helm-toolkit.snippets.kubernetes_mandatory_access_control_annotation" | indent 8 }}
     spec:

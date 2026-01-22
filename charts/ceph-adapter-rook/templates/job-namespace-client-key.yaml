@@ -89,19 +89,14 @@ metadata:
   labels:
 {{ tuple $envAll "ceph" "namespace-client-key" | include "helm-toolkit.snippets.kubernetes_metadata_labels" | indent 4 }}
 spec:
-  # FIX: add selector
-  selector:
-    matchLabels:
-      job-name: {{ $serviceAccountName }}
-
   template:
     metadata:
       labels:
-        job-name: {{ $serviceAccountName }}
+{{ tuple $envAll "ceph" "namespace-client-key" | include "helm-toolkit.snippets.kubernetes_metadata_labels" | indent 8 }}
       annotations:
 {{ dict "envAll" $envAll "podName" $serviceAccountName "containerNames" (list "ceph-storage-keys-generator" "init") | include "helm-toolkit.snippets.kubernetes_mandatory_access_control_annotation" | indent 8 }}
     spec:
-{{ dict "envAll" $envAll "application" "namespace_client_key" | include "helm-toolkit.snippets.kubernetes_pod_security_context" | indent 6 }}
+{{ dict "envAll" $envAll "application" "namespace-client-key" | include "helm-toolkit.snippets.kubernetes_pod_security_context" | indent 6 }}
       serviceAccountName: {{ $serviceAccountName }}
       restartPolicy: OnFailure
       nodeSelector:
@@ -112,14 +107,14 @@ spec:
         - name: namespace-client-key
 {{ tuple $envAll "ceph_config_helper" | include "helm-toolkit.snippets.image" | indent 10 }}
 {{ tuple $envAll $envAll.Values.pod.resources.jobs.namespace_client_key | include "helm-toolkit.snippets.kubernetes_resources" | indent 10 }}
-{{ dict "envAll" $envAll "application" "namespace_client_key" "container" "ceph_storage_keys_generator" | include "helm-toolkit.snippets.kubernetes_container_security_context" | indent 10 }}
+{{ dict "envAll" $envAll "application" "namespace-client-key" "container" "namespace-client-key" | include "helm-toolkit.snippets.kubernetes_container_security_context" | indent 10 }}
           env:
-            - name: CEPH_CONF_ETC
-              value: {{ .Values.configmap_name }}
             - name: DEPLOYMENT_NAMESPACE
               valueFrom:
                 fieldRef:
                   fieldPath: metadata.namespace
+            - name: SECRET_NAME
+              value: {{ .Values.secret_name }}
             - name: CEPH_CLUSTER_NAMESPACE
               value: {{ .Values.ceph_cluster_namespace }}
           command:
