@@ -15,12 +15,12 @@ spec:
     spec:
       containers:
       - name: openstack-exporter
-        image: quay.io/niedbalski/openstack-exporter:latest
+        image: quay.io/niedbalski/openstack-exporter:v1.6.0
         ports:
-        - containerPort: 9198
+        - containerPort: 9180
         env:
         - name: OS_AUTH_URL
-          value: "http://keystone.openstack.svc.cluster.local/v3"
+          value: "http://keystone.openstack.svc.cluster.local:5000/v3"
         - name: OS_USERNAME
           valueFrom:
             secretKeyRef:
@@ -41,6 +41,9 @@ spec:
           value: "3"
         - name: OS_REGION_NAME
           value: "RegionOne"
+        - name: OS_INTERFACE
+          value: internal
+
 
 ---
 apiVersion: v1
