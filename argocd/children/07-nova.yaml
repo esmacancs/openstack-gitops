@@ -15,13 +15,13 @@ spec:
     helm:
       valueFiles:
         - https://raw.githubusercontent.com/esmacancs/openstack-gitops/main/helm-values/openstack-lab-values.yaml
-      values: |
-        pod:
-          replicas:
-            api_osapi: 1
-            conductor: 1
-            scheduler: 1
-            novncproxy: 1
+#      values: |
+#        pod:
+#          replicas:
+#            api_osapi: 1
+#            conductor: 1
+#            scheduler: 1
+#            novncproxy: 1
 
         helm3_hook: false
 
