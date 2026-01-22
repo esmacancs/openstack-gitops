@@ -208,6 +208,11 @@ nova:
 
 # Cinder block storage with Ceph RBD backend
 cinder:
+  replicas:
+    api: 3
+    volume: 3
+    scheduler: 3
+    backup: 1
   pod:
     replicas:
       api: 3
