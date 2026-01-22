@@ -178,7 +178,7 @@ nova:
     replicas:
       api_metadata: 3
       conductor: 3
-      novncproxy: 0
+      novncproxy: 3
       osapi: 3
       scheduler: 3
       spiceproxy: 3
@@ -200,7 +200,15 @@ nova:
         enabled: true
         html5proxy_base_url: http://spiceproxy.openstack.svc.cluster.local:6082/
       vnc:
-        enabled: false  
+        enabled: true
+
+      libvirt:
+        images_type: rbd
+        images_rbd_pool: vms
+        images_rbd_ceph_conf: /etc/ceph/ceph.conf
+        rbd_user: nova
+        rbd_secret_uuid: 457eb676-33da-42ec-9a8c-9293d545c337
+ 
 
 # =============================================================================
 # OPENSTACK BLOCK STORAGE SERVICE (CINDER)
