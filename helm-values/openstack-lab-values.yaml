@@ -122,7 +122,7 @@ nova:
       host_fqdn_override:
         public:
           host: nova.10.8.132.108.sslip.io
-      internal:
+        internal:
           host: nova.openstack.svc.cluster.local
   image:
     nova_novncproxy: ghcr.io/vexxhost/nova:main@sha256:c289d782faebcd2d1c4055ded69110dacb38ea7d2ae59712bbecb452dd448442
