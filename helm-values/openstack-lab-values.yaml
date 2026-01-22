@@ -3,6 +3,16 @@ conf:
   ceph:
     enabled: true
     cluster_namespace: rook-ceph
+ceph_client:
+  cinder:
+    user: cinder
+    pool: volumes
+  glance:
+    user: glance
+    pool: images
+  nova:
+    user: nova
+    pool: vms
 
 network:
   api:
