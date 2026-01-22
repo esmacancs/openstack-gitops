@@ -110,15 +110,15 @@ nova:
     enabled: true
   manifests:
     daemonset_compute: true
-pod:
-  replicas:
-    api_metadata: 3
-    conductor: 3
-    novncproxy: 3
-    osapi: 3
-    scheduler: 3
-    spiceproxy: 3
-    novncproxy: 3
+  pod:
+    replicas:
+      api_metadata: 3
+      conductor: 3
+      novncproxy: 3
+      osapi: 3
+      scheduler: 3
+      spiceproxy: 3
+      novncproxy: 3
   useHostNetwork:
     novncproxy: false
   endpoints:
@@ -126,14 +126,21 @@ pod:
       host_fqdn_override:
         public:
           host: nova.10.8.132.108.sslip.io
-        internal:
+      internal:
           host: nova.openstack.svc.cluster.local
-image:
-  nova_novncproxy: ghcr.io/vexxhost/nova:main@sha256:c289d782faebcd2d1c4055ded69110dacb38ea7d2ae59712bbecb452dd448442
-  nova_novncproxy_assets: ghcr.io/vexxhost/nova:main@sha256:c289d782faebcd2d1c4055ded69110dacb38ea7d2ae59712bbecb452dd448442
+  image:
+    nova_novncproxy: ghcr.io/vexxhost/nova:main@sha256:c289d782faebcd2d1c4055ded69110dacb38ea7d2ae59712bbecb452dd448442
+    nova_novncproxy_assets: ghcr.io/vexxhost/nova:main@sha256:c289d782faebcd2d1c4055ded69110dacb38ea7d2ae59712bbecb452dd448442
   pull_secrets:
     - dockerhub-creds
-  
+  conf:
+    nova:
+      spice:
+        enabled: true
+        html5proxy_base_url: http://spiceproxy.openstack.svc.cluster.local:6082/
+    nova:
+      vnc:
+        enabled: false  
 
 cinder:
   pod:
@@ -236,8 +243,6 @@ horizon:
   manifests:
     configmap_logo: true
 
-elasticsearch:
-  replicaCount: 1
 
 ceph-adapter-rook:
   ceph_cluster_namespace: rook-ceph
