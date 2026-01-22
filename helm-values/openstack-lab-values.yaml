@@ -13,7 +13,6 @@ ceph_client:
   nova:
     user: nova
     pool: vms
-
 network:
   api:
     ingress:
