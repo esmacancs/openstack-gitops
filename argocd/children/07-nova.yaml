@@ -14,7 +14,7 @@ spec:
     path: charts/nova
     helm:
       valueFiles:
-        - ../../helm-values/openstack-lab-values.yaml
+        - helm-values/openstack-lab-values.yaml
   destination:
     server: https://kubernetes.default.svc
     namespace: openstack
