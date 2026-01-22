@@ -229,3 +229,8 @@ elasticsearch:
 
 ceph-adapter-rook:
   ceph_cluster_namespace: rook-ceph
+  mon_endpoints:
+    - 10.8.132.105:6789
+    - 10.8.132.104:6789
+    - 10.8.132.103:6789
+
