@@ -122,7 +122,9 @@ nova:
           host: nova.10.8.132.108.sslip.io
         internal:
           host: nova.openstack.svc.cluster.local
-
+  images:
+    novncproxy: quay.io/airshipit/nova:2025.1-ubuntu_noble
+    novncproxy_assets: quay.io/airshipit/nova:2025.1-ubuntu_noble
 cinder:
   pod:
     replicas:
