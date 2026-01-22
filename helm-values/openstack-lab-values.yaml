@@ -107,14 +107,9 @@ glance:
 
 nova:
   nova_compute:
-    enabled: false
+    enabled: true
   manifests:
-    daemonset_compute: false
-#  pod:
-#    replicas:
-#      api: 3
-#      conductor: 3
-#      scheduler: 3
+    daemonset_compute: true
 pod:
   replicas:
     api_metadata: 3
@@ -132,6 +127,12 @@ pod:
           host: nova.10.8.132.108.sslip.io
         internal:
           host: nova.openstack.svc.cluster.local
+image:
+  nova_novncproxy: ghcr.io/vexxhost/nova:main@sha256:c289d782faebcd2d1c4055ded69110dacb38ea7d2ae59712bbecb452dd448442
+  nova_novncproxy_assets: ghcr.io/vexxhost/nova:main@sha256:c289d782faebcd2d1c4055ded69110dacb38ea7d2ae59712bbecb452dd448442
+  pull_secrets:
+    - dockerhub-creds
+  
 
 cinder:
   pod:
