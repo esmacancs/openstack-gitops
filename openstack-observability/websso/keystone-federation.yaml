@@ -1,0 +1,101 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: keystone-federation-setup
+  namespace: openstack
+spec:
+  template:
+    spec:
+      restartPolicy: OnFailure
+      containers:
+      - name: setup
+        image: quay.io/airshipit/openstack-client:2025.1-ubuntu_noble
+        env:
+        - name: OS_AUTH_URL
+          value: "http://keystone.openstack.svc.cluster.local/v3"
+        - name: OS_USERNAME
+          value: "admin"
+        - name: OS_PASSWORD
+          value: "password"
+        - name: OS_PROJECT_NAME
+          value: "admin"
+        - name: OS_USER_DOMAIN_NAME
+          value: "Default"
+        - name: OS_PROJECT_DOMAIN_NAME
+          value: "Default"
+        - name: OS_IDENTITY_API_VERSION
+          value: "3"
+        command:
+        - /bin/bash
+        - -c
+        - |
+          set -e
+          
+          # Create identity provider
+          openstack identity provider create --remote-id keycloak keycloak || true
+          
+          # Create mapping for OIDC
+          cat > /tmp/mapping.json << 'EOF'
+          [
+            {
+              "local": [
+                {
+                  "user": {
+                    "name": "{0}",
+                    "domain": {
+                      "name": "Default"
+                    }
+                  }
+                },
+                {
+                  "projects": [
+                    {
+                      "name": "admin",
+                      "roles": [
+                        {
+                          "name": "admin"
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ],
+              "remote": [
+                {
+                  "type": "HTTP_OIDC_SUB"
+                }
+              ]
+            }
+          ]
+          EOF
+          
+          openstack mapping create --rules /tmp/mapping.json keycloak_mapping || true
+          
+          # Create federation protocol
+          openstack federation protocol create oidc \
+            --identity-provider keycloak \
+            --mapping keycloak_mapping || true
+          
+          echo "Keystone federation setup complete!"
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: horizon-websso-config
+  namespace: openstack
+data:
+  websso_extra_conf.py: |
+    # WebSSO Configuration for Horizon
+    WEBSSO_ENABLED = True
+    WEBSSO_INITIAL_CHOICE = "oidc"
+    WEBSSO_CHOICES = (
+        ("credentials", _("Keystone Credentials")),
+        ("oidc", _("OpenID Connect")),
+    )
+    WEBSSO_IDP_MAPPING = {
+        "keycloak": ("oidc", "Keycloak"),
+    }
+    
+    # Keystone federation settings
+    OPENSTACK_KEYSTONE_URL = "http://keystone.openstack.svc.cluster.local/v3"
+    WEBSSO_KEYSTONE_URL = OPENSTACK_KEYSTONE_URL + "/auth/OS-FEDERATION/websso/"

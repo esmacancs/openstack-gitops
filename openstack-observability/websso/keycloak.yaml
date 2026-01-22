@@ -1,0 +1,55 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: keycloak
+  namespace: argocd
+  annotations:
+    argocd.argoproj.io/sync-wave: "1"
+spec:
+  project: default
+  source:
+    repoURL: https://charts.bitnami.com/bitnami
+    chart: keycloak
+    targetRevision: "19.3.4"
+    helm:
+      values: |
+        auth:
+          adminUser: admin
+          adminPassword: admin123
+        
+        postgresql:
+          enabled: true
+          auth:
+            postgresPassword: postgres123
+            database: keycloak
+          primary:
+            persistence:
+              enabled: true
+              storageClass: general
+              size: 20Gi
+        
+        ingress:
+          enabled: true
+          ingressClassName: haproxy
+          annotations:
+            haproxy.org/path-rewrite: "/"
+          hostname: keycloak.10.8.132.108.sslip.io
+        
+        resources:
+          requests:
+            cpu: 500m
+            memory: 1Gi
+          limits:
+            cpu: 1000m
+            memory: 2Gi
+
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: websso
+
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true

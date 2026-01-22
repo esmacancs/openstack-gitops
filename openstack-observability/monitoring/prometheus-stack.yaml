@@ -1,0 +1,98 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: prometheus-stack
+  namespace: argocd
+  annotations:
+    argocd.argoproj.io/sync-wave: "1"
+spec:
+  project: default
+  source:
+    repoURL: https://prometheus-community.github.io/helm-charts
+    chart: kube-prometheus-stack
+    targetRevision: "51.2.0"
+    helm:
+      values: |
+        prometheus:
+          prometheusSpec:
+            retention: 15d
+            storageSpec:
+              volumeClaimTemplate:
+                spec:
+                  storageClassName: general
+                  accessModes: ["ReadWriteOnce"]
+                  resources:
+                    requests:
+                      storage: 50Gi
+            additionalScrapeConfigs:
+              - job_name: 'openstack-exporter'
+                static_configs:
+                  - targets: ['openstack-exporter.monitoring.svc.cluster.local:9198']
+              - job_name: 'mariadb-exporter'
+                static_configs:
+                  - targets: ['mariadb-exporter.openstack.svc.cluster.local:9104']
+              - job_name: 'rabbitmq-exporter'
+                static_configs:
+                  - targets: ['rabbitmq.openstack.svc.cluster.local:15692']
+
+        grafana:
+          adminPassword: admin123
+          persistence:
+            enabled: true
+            storageClassName: general
+            size: 10Gi
+          ingress:
+            enabled: true
+            ingressClassName: haproxy
+            annotations:
+              haproxy.org/path-rewrite: "/"
+            hosts:
+              - grafana.10.8.132.108.sslip.io
+          dashboardProviders:
+            dashboardproviders.yaml:
+              apiVersion: 1
+              providers:
+              - name: 'openstack'
+                orgId: 1
+                folder: 'OpenStack'
+                type: file
+                disableDeletion: false
+                editable: true
+                options:
+                  path: /var/lib/grafana/dashboards/openstack
+          dashboards:
+            openstack:
+              openstack-overview:
+                gnetId: 9701
+                revision: 1
+                datasource: Prometheus
+              nova-compute:
+                gnetId: 9704
+                revision: 1
+                datasource: Prometheus
+              neutron-overview:
+                gnetId: 9702
+                revision: 1
+                datasource: Prometheus
+
+        alertmanager:
+          alertmanagerSpec:
+            storage:
+              volumeClaimTemplate:
+                spec:
+                  storageClassName: general
+                  accessModes: ["ReadWriteOnce"]
+                  resources:
+                    requests:
+                      storage: 5Gi
+
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: monitoring
+
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true

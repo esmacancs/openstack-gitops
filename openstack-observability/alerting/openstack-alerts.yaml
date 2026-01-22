@@ -1,0 +1,81 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: openstack-alerts
+  namespace: monitoring
+data:
+  openstack-alerts.yaml: |
+    groups:
+    - name: openstack.rules
+      rules:
+      - alert: OpenStackServiceDown
+        expr: up{job=~"openstack.*"} == 0
+        for: 5m
+        labels:
+          severity: critical
+        annotations:
+          summary: "OpenStack service {{ $labels.job }} is down"
+          description: "OpenStack service {{ $labels.job }} has been down for more than 5 minutes."
+      
+      - alert: KeystoneHighResponseTime
+        expr: histogram_quantile(0.95, rate(http_request_duration_seconds_bucket{job="keystone"}[5m])) > 2
+        for: 10m
+        labels:
+          severity: warning
+        annotations:
+          summary: "Keystone high response time"
+          description: "Keystone 95th percentile response time is {{ $value }}s"
+      
+      - alert: NovaComputeDown
+        expr: openstack_nova_agent_state{binary="nova-compute"} == 0
+        for: 5m
+        labels:
+          severity: critical
+        annotations:
+          summary: "Nova compute service down on {{ $labels.host }}"
+          description: "Nova compute service is down on host {{ $labels.host }}"
+      
+      - alert: CinderVolumeServiceDown
+        expr: openstack_cinder_agent_state{binary="cinder-volume"} == 0
+        for: 5m
+        labels:
+          severity: critical
+        annotations:
+          summary: "Cinder volume service down on {{ $labels.host }}"
+          description: "Cinder volume service is down on host {{ $labels.host }}"
+      
+      - alert: NeutronAgentDown
+        expr: openstack_neutron_agent_state == 0
+        for: 5m
+        labels:
+          severity: warning
+        annotations:
+          summary: "Neutron agent down: {{ $labels.binary }} on {{ $labels.host }}"
+          description: "Neutron agent {{ $labels.binary }} is down on host {{ $labels.host }}"
+      
+      - alert: MariaDBDown
+        expr: mysql_up{job="mariadb-exporter"} == 0
+        for: 2m
+        labels:
+          severity: critical
+        annotations:
+          summary: "MariaDB is down"
+          description: "MariaDB database is not responding"
+      
+      - alert: RabbitMQDown
+        expr: rabbitmq_up{job="rabbitmq-exporter"} == 0
+        for: 2m
+        labels:
+          severity: critical
+        annotations:
+          summary: "RabbitMQ is down"
+          description: "RabbitMQ message broker is not responding"
+      
+      - alert: HighDiskUsage
+        expr: (node_filesystem_size_bytes - node_filesystem_avail_bytes) / node_filesystem_size_bytes * 100 > 85
+        for: 10m
+        labels:
+          severity: warning
+        annotations:
+          summary: "High disk usage on {{ $labels.instance }}"
+          description: "Disk usage is {{ $value }}% on {{ $labels.instance }}"

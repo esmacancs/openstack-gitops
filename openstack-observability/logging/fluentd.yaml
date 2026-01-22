@@ -1,0 +1,79 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: fluentd
+  namespace: argocd
+  annotations:
+    argocd.argoproj.io/sync-wave: "3"
+spec:
+  project: default
+  source:
+    repoURL: https://fluent.github.io/helm-charts
+    chart: fluentd
+    targetRevision: "0.4.0"
+    helm:
+      values: |
+        image:
+          repository: fluent/fluentd-kubernetes-daemonset
+          tag: v1.16-debian-elasticsearch7-1
+        
+        env:
+          - name: FLUENT_ELASTICSEARCH_HOST
+            value: "elasticsearch-master.logging.svc.cluster.local"
+          - name: FLUENT_ELASTICSEARCH_PORT
+            value: "9200"
+          - name: FLUENT_ELASTICSEARCH_SCHEME
+            value: "http"
+        
+        fileConfigs:
+          04_sources.conf: |-
+            <source>
+              @type tail
+              @id in_tail_container_logs
+              path /var/log/containers/*openstack*.log
+              pos_file /var/log/fluentd-containers.log.pos
+              tag openstack.*
+              read_from_head true
+              <parse>
+                @type json
+                time_format %Y-%m-%dT%H:%M:%S.%NZ
+              </parse>
+            </source>
+            
+            <source>
+              @type tail
+              @id in_tail_keystone_logs
+              path /var/log/containers/*keystone*.log
+              pos_file /var/log/fluentd-keystone.log.pos
+              tag openstack.keystone
+              read_from_head true
+              <parse>
+                @type json
+                time_format %Y-%m-%dT%H:%M:%S.%NZ
+              </parse>
+            </source>
+
+          02_filters.conf: |-
+            <filter openstack.**>
+              @type parser
+              key_name log
+              reserve_data true
+              <parse>
+                @type regexp
+                expression /^(?<timestamp>\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}\.\d{3}) (?<level>\w+) (?<service>\w+) (?<message>.*)$/
+              </parse>
+            </filter>
+
+        tolerations:
+          - key: node-role.kubernetes.io/control-plane
+            operator: Exists
+            effect: NoSchedule
+
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: logging
+
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
