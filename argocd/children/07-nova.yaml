@@ -15,43 +15,43 @@ spec:
     helm:
       valueFiles:
         - https://raw.githubusercontent.com/esmacancs/openstack-gitops/main/helm-values/openstack-lab-values.yaml
-#      values: |
-#        pod:
-#          replicas:
-#            api_osapi: 1
-#            conductor: 1
-#            scheduler: 1
-#            novncproxy: 1
-
-        helm3_hook: false
-
-        bootstrap:
-          enabled: true
-
-        images:
-          pull_secrets:
-            - dockerhub-creds
-
-        conf:
-          nova:
-            libvirt:
-              virt_type: qemu
-            DEFAULT:
-              instances_path: /var/lib/nova/instances
-        
-        storage_init:
-          enabled: false
-        
-        manifests:
-          daemonset_compute: true
-          job_cell_setup: true
-        
-        # Disable compute node dependencies for lab
-        dependencies:
-          static:
-            cell_setup:
-              jobs: null
-              services: null
+##      values: |
+##        pod:
+##          replicas:
+##            api_osapi: 1
+##            conductor: 1
+##            scheduler: 1
+##            novncproxy: 1
+#
+#     helm3_hook: false
+#
+#        bootstrap:
+#          enabled: true
+#
+#        images:
+#          pull_secrets:
+#            - dockerhub-creds
+#
+#        conf:
+#          nova:
+#            libvirt:
+#              virt_type: qemu
+#            DEFAULT:
+#              instances_path: /var/lib/nova/instances
+#        
+#        storage_init:
+#          enabled: false
+#        
+#        manifests:
+#          daemonset_compute: true
+#          job_cell_setup: true
+#        
+#        # Disable compute node dependencies for lab
+#        dependencies:
+#          static:
+#            cell_setup:
+#              jobs: null
+#              services: null
 
   destination:
     server: https://kubernetes.default.svc
