@@ -13,31 +13,7 @@ spec:
     path: charts/ceph-adapter-rook
     helm:
   valueFiles:
-    - https://raw.githubusercontent.com/esmacancs/openstack-gitops/main/helm-values/openstack-lab-values.yaml
-  values: |
-    ceph_cluster_namespace: rook-ceph
-
-    manifests:
-      job_namespace_client_ceph_config: true
-      job_namespace_client_key: true
-
-    ceph_client:
-      cinder:
-        enabled: true
-        caps:
-          mon: "allow r"
-          osd: "allow class-read object_prefix rbd_children, allow rwx pool=volumes"
-      glance:
-        enabled: true
-        caps:
-          mon: "allow r"
-          osd: "allow rwx pool=images"
-      nova:
-        enabled: true
-        caps:
-          mon: "allow r"
-          osd: "allow rwx pool=vms"
-
+        - https://raw.githubusercontent.com/esmacancs/openstack-gitops/main/helm-values/openstack-lab-values.yaml
   destination:
     server: https://kubernetes.default.svc
     namespace: openstack

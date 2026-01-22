@@ -15,31 +15,6 @@ spec:
     helm:
       valueFiles:
         - https://raw.githubusercontent.com/esmacancs/openstack-gitops/main/helm-values/openstack-lab-values.yaml
-      values: |
-        pod:
-          replicas:
-            api: 1
-
-        helm3_hook: false
-
-        bootstrap:
-          enabled: true
-
-        images:
-          pull_secrets:
-            - dockerhub-creds
-
-        storage: pvc
-        
-        conf:
-          glance:
-            glance_store:
-              default_store: file
-              filesystem_store_datadir: /var/lib/glance/images
-        
-        storage_init:
-          enabled: false
-
   destination:
     server: https://kubernetes.default.svc
     namespace: openstack

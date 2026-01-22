@@ -11,7 +11,7 @@ spec:
     path: charts/elasticsearch
     helm:
       valueFiles:
-        - ../../helm-values/openstack-lab-values.yaml
+        - https://raw.githubusercontent.com/esmacancs/openstack-gitops/main/helm-values/openstack-lab-values.yaml
   destination:
     server: https://kubernetes.default.svc
     namespace: openstack

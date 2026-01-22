@@ -1,4 +1,22 @@
 helm3_hook: false
+
+# Global image pull secrets
+images:
+  pull_secrets:
+    - dockerhub-creds
+
+# Global bootstrap configuration
+bootstrap:
+  enabled: true
+  ks_user: admin
+  ks_project: admin
+  ks_role: admin
+  region: RegionOne
+
+# Global secrets configuration
+secrets:
+  fernet_keys:
+    secret_name: keystone-fernet-keys
 conf:
   ceph:
     enabled: true

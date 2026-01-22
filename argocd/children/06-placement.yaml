@@ -15,20 +15,6 @@ spec:
     helm:
       valueFiles:
         - https://raw.githubusercontent.com/esmacancs/openstack-gitops/main/helm-values/openstack-lab-values.yaml
-      values: |
-        pod:
-          replicas:
-            api: 1
-
-        helm3_hook: false
-
-        bootstrap:
-          enabled: true
-
-        images:
-          pull_secrets:
-            - dockerhub-creds
-
   destination:
     server: https://kubernetes.default.svc
     namespace: openstack

@@ -1,0 +1,16 @@
+apiVersion: v1
+data:
+  ceph.conf: |
+    [global]
+    mon_host = 10.8.132.104:6789,10.8.132.103:6789,10.8.132.105:6789
+kind: ConfigMap
+metadata:
+  annotations:
+    argocd.argoproj.io/tracking-id: ceph-adapter-rook:/ConfigMap:openstack/ceph-etc
+    kubectl.kubernetes.io/last-applied-configuration: |
+      {"apiVersion":"v1","data":{"ceph.conf":"[global]\nmon_host = will be discovered\n"},"kind":"ConfigMap","metadata":{"annotations":{"argocd.argoproj.io/tracking-id":"ceph-adapter-rook:/ConfigMap:openstack/ceph-etc"},"name":"ceph-etc","namespace":"openstack"}}
+  creationTimestamp: "2026-01-22T06:06:04Z"
+  name: ceph-etc
+  namespace: openstack
+  resourceVersion: "12384907"
+  uid: 86511932-ef3e-4586-82e8-7ff5239fbd86

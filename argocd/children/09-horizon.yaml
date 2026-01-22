@@ -15,29 +15,6 @@ spec:
     helm:
       valueFiles:
         - https://raw.githubusercontent.com/esmacancs/openstack-gitops/main/helm-values/openstack-lab-values.yaml
-      values: |
-        pod:
-          replicas:
-            server: 1
-
-        helm3_hook: false
-
-        images:
-          pull_secrets:
-            - dockerhub-creds
-
-        conf:
-          horizon:
-            local_settings:
-              config:
-                openstack_keystone_url: "http://keystone-api.openstack.svc.cluster.local:5000/v3"
-                site_branding: "YourCompany OpenStack"
-                site_branding_link: "https://yourcompany.com"
-                help_url: "https://yourcompany.com/support"
-
-        manifests:
-          configmap_logo: true
-
   destination:
     server: https://kubernetes.default.svc
     namespace: openstack

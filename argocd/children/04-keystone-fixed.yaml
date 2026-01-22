@@ -15,32 +15,7 @@ spec:
     helm:
       valueFiles:
         - https://raw.githubusercontent.com/esmacancs/openstack-gitops/main/helm-values/openstack-lab-values.yaml
-      values: |
-        pod:
-          replicas:
-            api: 1
-
-        # REQUIRED for GitOps
-        helm3_hook: false
-
-        bootstrap:
-          enabled: true
-          ks_user: admin
-          ks_project: admin
-          ks_role: admin
-          region: RegionOne
-
-        keystone-resources:
-          enabled: true
-
-        images:
-          pull_secrets:
-            - dockerhub-creds
-
-        # Let OpenStack Helm manage fernet keys automatically
-        secrets:
-          fernet_keys:
-            secret_name: keystone-fernet-keys
+        - https://raw.githubusercontent.com/esmacancs/openstack-gitops/main/helm-values/openstack-lab-values.yaml
 
   destination:
     server: https://kubernetes.default.svc
