@@ -1,11 +1,16 @@
+# =============================================================================
+# GLOBAL CONFIGURATIONS
+# =============================================================================
+
+# Disable Helm 3 hooks for GitOps compatibility
 helm3_hook: false
 
-# Global image pull secrets
+# Global image pull secrets for all services
 images:
   pull_secrets:
     - dockerhub-creds
 
-# Global bootstrap configuration
+# Global bootstrap configuration for keystone
 bootstrap:
   enabled: true
   ks_user: admin
@@ -17,10 +22,18 @@ bootstrap:
 secrets:
   fernet_keys:
     secret_name: keystone-fernet-keys
+
+# =============================================================================
+# CEPH STORAGE CONFIGURATION
+# =============================================================================
+
+# Ceph configuration for OpenStack services
 conf:
   ceph:
     enabled: true
     cluster_namespace: rook-ceph
+
+# Ceph client pools for each service
 ceph_client:
   cinder:
     user: cinder
@@ -31,6 +44,12 @@ ceph_client:
   nova:
     user: nova
     pool: vms
+
+# =============================================================================
+# NETWORKING & INGRESS CONFIGURATION
+# =============================================================================
+
+# Global network configuration for HAProxy ingress
 network:
   api:
     ingress:
@@ -39,18 +58,26 @@ network:
         cluster: "ingress-openstack"
       annotations:
         haproxy.org/path-rewrite: "/"
+
+# =============================================================================
+# MESSAGING & DATABASE CONFIGURATION
+# =============================================================================
+
+# RabbitMQ cluster configuration
 rabbitmq:
   cluster_partition_handling: autoheal
 
+# Global pod replica configuration
 pod:
   replicas:
     server: 3
 
+# Global volume configuration
 volume:
   class_name: general
   size: 5Gi
 
-
+# MariaDB database configuration
 mariadb:
   volume:
     enabled: true
@@ -60,9 +87,19 @@ mariadb:
     replicas:
       server: 3
 
+# Memcached configuration
 memcached:
   replicas: 3
 
+# =============================================================================
+# OPENSTACK IDENTITY SERVICE (KEYSTONE)
+# =============================================================================
+
+# =============================================================================
+# OPENSTACK IDENTITY SERVICE (KEYSTONE)
+# =============================================================================
+
+# Keystone identity service configuration
 keystone:
   pod:
     replicas:
@@ -83,9 +120,15 @@ keystone:
         public:
           host: keystone.10.8.132.108.sslip.io
 
+# Keystone resources (projects, users, roles)
 keystone-resources:
   enabled: true
 
+# =============================================================================
+# OPENSTACK IMAGE SERVICE (GLANCE)
+# =============================================================================
+
+# Glance image service with Ceph RBD backend
 glance:
   storage:
     type: rbd
@@ -121,6 +164,11 @@ glance:
         internal:
           host: glance.openstack.svc.cluster.local
 
+# =============================================================================
+# OPENSTACK COMPUTE SERVICE (NOVA)
+# =============================================================================
+
+# Nova compute service configuration
 nova:
   nova_compute:
     enabled: true
@@ -154,6 +202,11 @@ nova:
       vnc:
         enabled: false  
 
+# =============================================================================
+# OPENSTACK BLOCK STORAGE SERVICE (CINDER)
+# =============================================================================
+
+# Cinder block storage with Ceph RBD backend
 cinder:
   pod:
     replicas:
@@ -190,6 +243,11 @@ cinder:
         internal:
           host: cinder.openstack.svc.cluster.local
 
+# =============================================================================
+# OPENSTACK NETWORKING SERVICE (NEUTRON)
+# =============================================================================
+
+# Neutron networking service with OpenVSwitch
 neutron:
   neutron_agent:
     enabled: false
@@ -232,6 +290,11 @@ neutron:
           bridge_mappings: provider:br-provider
           local_ip: $HOST_IP
 
+# =============================================================================
+# OPENSTACK DASHBOARD (HORIZON)
+# =============================================================================
+
+# Horizon web dashboard with custom branding
 horizon:
   replicaCount: 3
   endpoints:
@@ -257,6 +320,11 @@ horizon:
   manifests:
     configmap_logo: true
 
+# =============================================================================
+# OPENSTACK PLACEMENT SERVICE
+# =============================================================================
+
+# Placement service for resource tracking
 placement:
   pod:
     replicas:
@@ -275,6 +343,11 @@ placement:
         internal:
           host: placement.openstack.svc.cluster.local
 
+# =============================================================================
+# CEPH ADAPTER FOR ROOK
+# =============================================================================
+
+# Ceph adapter configuration for Rook integration
 ceph-adapter-rook:
   ceph_cluster_namespace: rook-ceph
   mon_endpoints:
