@@ -16,9 +16,8 @@ spec:
       valueFiles:
         - https://raw.githubusercontent.com/esmacancs/openstack-gitops/main/helm-values/openstack-lab-values.yaml
       values: |
-        pod:
-          replicas:
-            api: 3
+        replicas:
+          api: 3
   destination:
     server: https://kubernetes.default.svc
     namespace: openstack
