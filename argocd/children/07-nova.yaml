@@ -17,7 +17,7 @@ spec:
       path: charts/nova
       helm:
         valueFiles:
-          - $values/helm-values/nova-overrides.yaml
+          - $values/helm-values/nova-override.ya
 
     # 2️⃣ Values source (referenced by $values)
     - repoURL: https://github.com/esmacancs/openstack-gitops.git
