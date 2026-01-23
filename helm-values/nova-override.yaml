@@ -11,11 +11,13 @@ nova:
   pod:
     replicas:
       api_metadata: 3
-      conductor: 3
-      novncproxy: 3
+      compute_ironic: 1
       osapi: 3
+      conductor: 3
       scheduler: 3
-      spiceproxy: 3
+      novncproxy: 3
+      serialproxy: 1
+      spiceproxy: 1
   useHostNetwork:
     novncproxy: false
   endpoints:
