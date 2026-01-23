@@ -2472,7 +2472,7 @@ pod:
   useHostNetwork:
     novncproxy: true
   replicas:
-    api_metadata: 1
+    api_metadata: 3
     compute_ironic: 1
     osapi: 1
     conductor: 1
