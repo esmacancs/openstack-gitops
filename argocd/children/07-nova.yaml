@@ -7,21 +7,26 @@ metadata:
     argocd.argoproj.io/sync-wave: "7"
 spec:
   project: default
-
   source:
     repoURL: https://github.com/esmacancs/openstack-gitops.git
     targetRevision: main
     path: charts/nova
     helm:
       valueFiles:
-        - https://raw.githubusercontent.com/esmacancs/openstack-gitops/main/helm-values/nova-overrides.yaml
+        - helm-values/nova-overrides.yaml
   destination:
     server: https://kubernetes.default.svc
     namespace: openstack
-
   syncPolicy:
     automated:
       prune: true
       selfHeal: true
     syncOptions:
       - CreateNamespace=true
+      - Validate=false
+      - ApplyOutOfSyncOnly=true
+      - Replace=true
+      - SkipHooks=false
+      - PruneLast=true
+      - Force=true
+    
