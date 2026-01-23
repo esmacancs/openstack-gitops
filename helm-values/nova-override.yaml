@@ -1,0 +1,45 @@
+# =============================================================================
+# OPENSTACK COMPUTE SERVICE (NOVA)
+# =============================================================================
+
+# Nova compute service configuration
+nova:
+  nova_compute:
+    enabled: true
+  manifests:
+    daemonset_compute: true
+  pod:
+    replicas:
+      api_metadata: 3
+      conductor: 3
+      novncproxy: 3
+      osapi: 3
+      scheduler: 3
+      spiceproxy: 3
+  useHostNetwork:
+    novncproxy: false
+  endpoints:
+    compute:
+      host_fqdn_override:
+        public:
+          host: nova.10.8.132.108.sslip.io
+        internal:
+          host: nova.openstack.svc.cluster.local
+  image:
+    nova_novncproxy: ghcr.io/vexxhost/nova:main@sha256:c289d782faebcd2d1c4055ded69110dacb38ea7d2ae59712bbecb452dd448442
+    nova_novncproxy_assets: ghcr.io/vexxhost/nova:main@sha256:c289d782faebcd2d1c4055ded69110dacb38ea7d2ae59712bbecb452dd448442
+  conf:
+    nova:
+      spice:
+        enabled: true
+        html5proxy_base_url: http://spiceproxy.openstack.svc.cluster.local:6082/
+      vnc:
+        enabled: true
+
+      libvirt:
+        images_type: rbd
+        images_rbd_pool: vms
+        images_rbd_ceph_conf: /etc/ceph/ceph.conf
+        rbd_user: nova
+        rbd_secret_uuid: 457eb676-33da-42ec-9a8c-9293d545c337
+ 
