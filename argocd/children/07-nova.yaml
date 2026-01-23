@@ -14,7 +14,7 @@ spec:
     path: charts/nova
     helm:
       valueFiles:
-        - nova-overrides.yaml
+        - https://raw.githubusercontent.com/esmacancs/openstack-gitops/main/helm-values/openstack-lab-values.yaml
   destination:
     server: https://kubernetes.default.svc
     namespace: openstack
