@@ -1499,6 +1499,9 @@ conf:
       rbd_secret_uuid: 457eb676-33da-42ec-9a8c-9293d545c337
       disk_cachemodes: "network=writeback"
       hw_disk_discard: unmap
+      # 🔽 ADD THESE LINES 🔽
+      live_migration_flag: VIR_MIGRATE_LIVE
+      block_migration_flag: VIR_MIGRATE_NON_SHARED_INC
     upgrade_levels:
       compute: auto
     cache:
