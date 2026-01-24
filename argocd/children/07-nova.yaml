@@ -11,7 +11,7 @@ spec:
   source:
     repoURL: https://github.com/esmacancs/openstack-gitops.git
     targetRevision: main
-    path: charts/neutron
+    path: charts/nova
     helm:
       valueFiles:
         - https://raw.githubusercontent.com/esmacancs/openstack-gitops/main/helm-values/openstack-lab-values.yaml
