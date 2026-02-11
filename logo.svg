@@ -1,0 +1,77 @@
+<svg width="280" height="70" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <!-- Modern gradient for background -->
+    <linearGradient id="bgGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#1e3a8a;stop-opacity:1" />
+      <stop offset="50%" style="stop-color:#3730a3;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#4c1d95;stop-opacity:1" />
+    </linearGradient>
+    
+    <!-- Premium gold gradient for text -->
+    <linearGradient id="goldGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" style="stop-color:#fbbf24;stop-opacity:1" />
+      <stop offset="25%" style="stop-color:#f59e0b;stop-opacity:1" />
+      <stop offset="50%" style="stop-color:#d97706;stop-opacity:1" />
+      <stop offset="75%" style="stop-color:#f59e0b;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#fbbf24;stop-opacity:1" />
+    </linearGradient>
+    
+    <!-- Accent gradient for underline -->
+    <linearGradient id="accentGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" style="stop-color:#10b981;stop-opacity:1" />
+      <stop offset="50%" style="stop-color:#06b6d4;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#3b82f6;stop-opacity:1" />
+    </linearGradient>
+    
+    <!-- Shadow filter -->
+    <filter id="shadow" x="-50%" y="-50%" width="200%" height="200%">
+      <feGaussianBlur in="SourceAlpha" stdDeviation="2"/>
+      <feOffset dx="2" dy="2" result="offsetblur"/>
+      <feFlood flood-color="#000000" flood-opacity="0.3"/>
+      <feComposite in2="offsetblur" operator="in"/>
+      <feMerge>
+        <feMergeNode/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+    
+    <!-- Glow effect -->
+    <filter id="glow">
+      <feGaussianBlur stdDeviation="3" result="coloredBlur"/>
+      <feMerge>
+        <feMergeNode in="coloredBlur"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+  </defs>
+  
+  <!-- Main background with rounded corners -->
+  <rect width="280" height="70" fill="url(#bgGrad)" rx="12" ry="12"/>
+  
+  <!-- Inner decorative border -->
+  <rect x="4" y="4" width="272" height="62" fill="none" stroke="url(#goldGrad)" stroke-width="1" rx="10" ry="10" opacity="0.6"/>
+  
+  <!-- Decorative corner elements -->
+  <circle cx="20" cy="20" r="3" fill="url(#accentGrad)" opacity="0.8"/>
+  <circle cx="260" cy="20" r="3" fill="url(#accentGrad)" opacity="0.8"/>
+  <circle cx="20" cy="50" r="3" fill="url(#accentGrad)" opacity="0.8"/>
+  <circle cx="260" cy="50" r="3" fill="url(#accentGrad)" opacity="0.8"/>
+  
+  <!-- Main text with premium styling -->
+  <text x="140" y="40" font-family="Arial, sans-serif" font-size="26" font-weight="bold" fill="url(#goldGrad)" text-anchor="middle" filter="url(#shadow)">
+    TrishOra
+  </text>
+  
+  <!-- Decorative underline -->
+  <rect x="60" y="48" width="160" height="2" fill="url(#accentGrad)" rx="1"/>
+  
+  <!-- Small decorative elements -->
+  <path d="M 50 35 L 55 35 L 52.5 30 Z" fill="url(#goldGrad)" opacity="0.7"/>
+  <path d="M 225 35 L 230 35 L 227.5 30 Z" fill="url(#goldGrad)" opacity="0.7"/>
+  
+  <!-- Subtle pattern overlay -->
+  <pattern id="dots" x="0" y="0" width="20" height="20" patternUnits="userSpaceOnUse">
+    <circle cx="2" cy="2" r="1" fill="#ffffff" opacity="0.1"/>
+  </pattern>
+  <rect width="280" height="70" fill="url(#dots)" rx="12" ry="12"/>
+</svg>
